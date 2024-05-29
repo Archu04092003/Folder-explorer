@@ -1,25 +1,28 @@
-import logo from './logo.svg';
-import './App.css';
+// src/App.js
+import React, { useState } from 'react';
+import FolderProvider from './components/FolderProvider';
+import FolderTree from './components/FolderTree';
+import CreateFolderDialog from './components/CreateFolderDialog';
+import FolderDetails from './components/FolderDetails';
 
-function App() {
+const App = () => {
+  const [selectedFolderId, setSelectedFolderId] = useState('root');
+  const [isCreateDialogOpen, setCreateDialogOpen] = useState(false);
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <FolderProvider>
+      <div className="app">
+        <div className="sidebar">
+          <button onClick={() => setCreateDialogOpen(true)}>Create Folder</button>
+          <FolderTree />
+        </div>
+        <div className="main-content">
+          <FolderDetails folderId={selectedFolderId} />
+        </div>
+        {isCreateDialogOpen && <CreateFolderDialog parentId={selectedFolderId} onClose={() => setCreateDialogOpen(false)} />}
+      </div>
+    </FolderProvider>
   );
-}
+};
 
 export default App;
